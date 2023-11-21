@@ -13,8 +13,9 @@ const centerY = WINDOW_HEIGHT / 2;
 const squareWidth = 10;
 const squareHeight = 10;
 
-c.fillRect(centerX - (squareWidth / 2), centerY - (squareHeight / 2), squareWidth, squareHeight);
+// c.fillRect(centerX - (squareWidth / 2), centerY - (squareHeight / 2), squareWidth, squareHeight);
 c.lineWidth = 2
+c.strokeStyle = 'white';
 
 let lineStartX = centerX;
 let lineStartY = centerY;
@@ -47,13 +48,47 @@ async function draw() {
 
         c.stroke();
 
-        
-
         if (i % 2 === 0) {
             length += increment;
         }
 
         await sleep(1)
+    }
+
+    length = 15;
+    lineStartX = centerX;
+    lineStartY = centerY;
+
+    for (let i = 1; i <= 51; i++) {
+        const diagonals = ['upright', 'downright', 'downleft', 'upleft'][i % 4]
+
+        c.beginPath();
+        c.moveTo(lineStartX, lineStartY) // These variable are updated in the lineTo function
+
+        switch (diagonals) {
+            case 'upright':
+                c.lineTo(lineStartX += length, lineStartY -= length) // Shorthand reassignment
+                break;
+            case 'upleft':
+                c.lineTo(lineStartX -= length, lineStartY -= length);
+                break;
+            case 'downright':
+                c.lineTo(lineStartX += length, lineStartY += length);
+                break;
+            case 'downleft':
+                c.lineTo(lineStartX -= length, lineStartY += length);
+                break;
+            
+        }
+
+        c.stroke();
+
+        if (i % 2 === 0) {
+            length += increment;
+        }
+
+        await sleep(50)
+
     }
 }
 
