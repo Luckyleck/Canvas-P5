@@ -76,8 +76,14 @@ function render() {
     });
 }
 
+const capturer = new CCapture({
+    format: 'gif',
+    workersPath: 'js/', // Change this path to the location of the CCapture worker scripts
+    verbose: true,
+});
+
 function animate() {
-    // c.clearRect(0, 0, canvas.width, canvas.height);
+    capturer.capture(canvas);
     render();
     requestAnimationFrame(animate);
 }
@@ -91,4 +97,22 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 
 createCircles();
+capturer.start();
 animate();
+
+// Stop the recording after a certain duration
+function download(data, filename) {
+    const blob = new Blob([data], { type: 'application/octet-stream' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}
+
+// Stop the recording after a certain duration
+setTimeout(() => {
+    capturer.stop();
+    capturer.save(blob => {
+        download(blob, 'animation.gif');
+    });
+}, 5000); // Adjust the duration as needed // Adjust the duration as needed
