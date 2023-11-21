@@ -14,55 +14,55 @@ const squareWidth = 10;
 const squareHeight = 10;
 
 c.fillRect(centerX - (squareWidth / 2), centerY - (squareHeight / 2), squareWidth, squareHeight);
-c.lineWidth = 2;
+c.lineWidth = 2
 
 let lineStartX = centerX;
 let lineStartY = centerY;
 
-const increment = 10;
+const increment = 15;
 
-let length = 10;
+let length = 15;
+
 
 async function draw() {
     for (let i = 1; i <= 100; i++) {
-        const direction = ['up', 'upright', 'downright', 'down', 'downleft', 'upleft'][i % 6];
-
+        const direction = ['up', 'right', 'down', 'left'][i % 4];
         c.beginPath();
-        c.moveTo(lineStartX, lineStartY);
+        c.moveTo(lineStartX, lineStartY) // These variable are updated in the lineTo function
 
         switch (direction) {
-            case 'up':
-                c.lineTo(lineStartX, lineStartY -= length);
-                break;
-            case 'upright':
-                c.lineTo(lineStartX += (length * Math.sqrt(3) / 2), lineStartY -= length / 2);
-                break;
-            case 'downright':
-                c.lineTo(lineStartX += (length * Math.sqrt(3) / 2), lineStartY += length / 2);
+            case 'right':
+                c.lineTo(lineStartX += length, lineStartY) // Shorthand reassignment
                 break;
             case 'down':
                 c.lineTo(lineStartX, lineStartY += length);
                 break;
-            case 'downleft':
-                c.lineTo(lineStartX -= (length * Math.sqrt(3) / 2), lineStartY += length / 2);
+            case 'left':
+                c.lineTo(lineStartX -= length, lineStartY);
                 break;
-            case 'upleft':
-                c.lineTo(lineStartX -= (length * Math.sqrt(3) / 2), lineStartY -= length / 2);
+            case 'up':
+                c.lineTo(lineStartX, lineStartY -= length);
                 break;
         }
 
         c.stroke();
 
+        
+
         if (i % 2 === 0) {
             length += increment;
         }
 
-        await sleep(100);
+        await sleep(1)
     }
 }
 
+
+
 const sleep = (milliseconds) => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
+    return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
 draw();
+
+
