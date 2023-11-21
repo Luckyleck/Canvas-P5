@@ -56,7 +56,7 @@ class Circle {
 
 
 function createCircles() {
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 5; i++) {
         const circle = new Circle(centerX, centerY);
         circle.i = i
         circle.color = `rgb(
@@ -83,6 +83,7 @@ const capturer = new CCapture({
 });
 
 function animate() {
+    // c.clearRect(0,0,canvas.width, canvas.height)
     capturer.capture(canvas);
     render();
     requestAnimationFrame(animate);
