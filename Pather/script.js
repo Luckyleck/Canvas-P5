@@ -4,6 +4,9 @@ canvas.style.backgroundColor = '#D59B9B';
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+let centerX = canvas.width / 2;
+let centerY = canvas.height / 2;
+
 const c = canvas.getContext('2d');
 
 const squareSize = [50, 50];
@@ -11,23 +14,24 @@ const circleArgs = [5, 0, 2 * Math.PI];
 
 let squareCords = [];
 let directionsLog = [];
+const directions = ['up', 'down', 'left', 'right'];
+
 
 function getInitialDirection() {
-    const directions = ['up', 'down', 'left', 'right'];
-    return directions[Math.floor(Math.random() * directions.length)];
+    const direction = directions[Math.floor(Math.random() * directions.length)];
+    directionsLog.push(direction);
+    console.log(direction);
+    return direction;
 }
 
 function draw(length) {
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
 
     function drawSquare() {
         if (!squareCords.length) {
-            const initialDirection = getInitialDirection();
+            getInitialDirection();
             const [x, y] = [centerX - squareSize[0] / 2, centerY - squareSize[1] / 2];
             c.fillRect(x, y, ...squareSize);
             squareCords.push([x, y]);
-            directionsLog.push(initialDirection);
         }
 
         let i = 0;
@@ -63,11 +67,39 @@ function draw(length) {
             squareCords.push([nextX, nextY]);
 
             const directions = ['up', 'down', 'left', 'right'];
-            let randomDirection = directions[Math.floor(Math.random() * directions.length)];
-            while (randomDirection === directionsLog[directionsLog.length - 1]) {
-                randomDirection = directions[Math.floor(Math.random() * directions.length)];
+            let nextDirection = directions[Math.floor(Math.random() * directions.length)];
+            while (nextDirection === directionsLog[directionsLog.length - 1]) {
+                nextDirection = directions[Math.floor(Math.random() * directions.length)];
+
+                let nextX;
+                let nextY;
+
+                switch (nextDirection) {
+                    case 'up':
+                        nextX = lastX;
+                        nextY = lastY - squareSize[1];
+                        break;
+                    case 'down':
+                        nextX = lastX;
+                        nextY = lastY + squareSize[1];
+                        break;
+                    case 'left':
+                        nextX = lastX - squareSize[0];
+                        nextY = lastY;
+                        break;
+                    case 'right':
+                        nextX = lastX + squareSize[0];
+                        nextY = lastY;
+                        break;
+                }
+
+                squareCords.any(cords => {
+                    
+                })
+                
             }
-            directionsLog.push(randomDirection);
+            directionsLog.push(nextDirection);
+            console.log(nextDirection)
 
             i++;
         }
@@ -86,8 +118,11 @@ function draw(length) {
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    squareCords = [];
-    directionsLog = [];
+    centerX = canvas.width / 2;
+    centerY = canvas.height / 2;
+    
+    // squareCords = [];
+    // directionsLog = [];
     draw(duration);
 }
 
