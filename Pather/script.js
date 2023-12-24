@@ -16,7 +16,8 @@ let squareCords = [];
 let directionsLog = [];
 
 const directions = ['up', 'down', 'left', 'right'];
-directionsLog.push(directions[Math.floor(Math.random() * directions.length)])
+let shiftingDirections = [...directions];
+// directionsLog.push(directions[Math.floor(Math.random() * directions.length)])
 
 console.log(`Initial Direction `, directionsLog[0])
 
@@ -33,7 +34,7 @@ function drawPath(length) {
     squareCords.push([centerX, centerY])
 
     // create first square
-    c.fillStyle = getRandomColor(); // Set a random color
+    c.fillStyle = 'red'; // Set a random color
     c.strokeStyle = 'black'; // Set black border
     c.fillRect(centerX, centerY, ...squareSize)
     c.strokeRect(centerX, centerY, ...squareSize);
@@ -41,10 +42,13 @@ function drawPath(length) {
     let i = 0;
     while (i < length) {
         let nextDirection = directions[Math.floor(Math.random() * directions.length)]
-        while (nextDirection === directionsLog[directionsLog.length - 1]) {
-            nextDirection = directions[Math.floor(Math.random() * directions.length)]
-            console.log('getting new direction')
+
+        if (nextDirection === directionsLog[directionsLog.length - 1]) {
+            let wrongDirection = nextDirection;
+            let safeDirection = shiftingDirections.filter(direction => direction !== nextDirection);
+            nextDirection = safeDirection[Math.floor(Math.random() * safeDirection.length)];
         }
+
         let nextX = squareCords[squareCords.length - 1][0]
         let nextY = squareCords[squareCords.length - 1][1]
 
@@ -64,6 +68,7 @@ function drawPath(length) {
         }
 
         let isValid = true;
+        console.log(shiftingDirections)
 
         for (let cord of squareCords) {
             let pastX = cord[0]
@@ -71,6 +76,7 @@ function drawPath(length) {
 
             if (nextX === pastX && nextY === pastY) {
                 isValid = false;
+                console.log('Not valid coordinate')
                 break;
             }
         }
@@ -90,7 +96,7 @@ function drawPath(length) {
     }
 }
 
-drawPath(100);
+drawPath(40);
 console.log(directionsLog)
 
 
